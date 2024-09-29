@@ -52,7 +52,7 @@ class MVTecDRAEMTestDataset(Dataset):
             mask_path = os.path.join(mask_path, base_dir)
             mask_file_name = file_name.split(".")[0]+"_mask.png"
             mask_path = os.path.join(mask_path, mask_file_name)
-            image, mask = self.transform_image(img_path, mask_path)
+            image, mask = self.transform_image(img_path, None)
             has_anomaly = np.array([1], dtype=np.float32)
 
         sample = {'image': image, 'has_anomaly': has_anomaly,'mask': mask, 'idx': idx}
@@ -73,7 +73,7 @@ class MVTecDRAEMTrainDataset(Dataset):
         self.root_dir = root_dir
         self.resize_shape=resize_shape
 
-        self.image_paths = sorted(glob.glob(root_dir+"/*.png"))
+        self.image_paths = sorted(glob.glob(root_dir+"/*.[jJpP][pPnNgG]*"))
 
         self.anomaly_source_paths = sorted(glob.glob(anomaly_source_path+"/*/*.jpg"))
 
