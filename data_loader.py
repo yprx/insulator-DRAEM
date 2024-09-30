@@ -11,7 +11,7 @@ class MVTecDRAEMTestDataset(Dataset):
 
     def __init__(self, root_dir, resize_shape=None):
         self.root_dir = root_dir
-        self.images = sorted(glob.glob(root_dir+"/*/*.png"))
+        self.images = sorted(glob.glob(root_dir+"/*/*.[jJpPtTgG][pPnNiIfF]*"))
         self.resize_shape=resize_shape
 
     def __len__(self):
