@@ -119,29 +119,29 @@ def test(obj_names, mvtec_path, checkpoint_path, base_model_name):
         auroc = roc_auc_score(anomaly_score_gt, anomaly_score_prediction)
         ap = average_precision_score(anomaly_score_gt, anomaly_score_prediction)
 
-        total_gt_pixel_scores = total_gt_pixel_scores.astype(np.uint8)
-        total_gt_pixel_scores = total_gt_pixel_scores[:img_dim * img_dim * mask_cnt]
-        total_pixel_scores = total_pixel_scores[:img_dim * img_dim * mask_cnt]
-        auroc_pixel = roc_auc_score(total_gt_pixel_scores, total_pixel_scores)
-        ap_pixel = average_precision_score(total_gt_pixel_scores, total_pixel_scores)
-        obj_ap_pixel_list.append(ap_pixel)
-        obj_auroc_pixel_list.append(auroc_pixel)
+        #total_gt_pixel_scores = total_gt_pixel_scores.astype(np.uint8)
+        #total_gt_pixel_scores = total_gt_pixel_scores[:img_dim * img_dim * mask_cnt]
+        #total_pixel_scores = total_pixel_scores[:img_dim * img_dim * mask_cnt]
+        #auroc_pixel = roc_auc_score(total_gt_pixel_scores, total_pixel_scores)
+        #ap_pixel = average_precision_score(total_gt_pixel_scores, total_pixel_scores)
+        #obj_ap_pixel_list.append(ap_pixel)
+        #obj_auroc_pixel_list.append(auroc_pixel)
         obj_auroc_image_list.append(auroc)
         obj_ap_image_list.append(ap)
         print(obj_name)
         print("AUC Image:  " +str(auroc))
         print("AP Image:  " +str(ap))
-        print("AUC Pixel:  " +str(auroc_pixel))
-        print("AP Pixel:  " +str(ap_pixel))
+        #print("AUC Pixel:  " +str(auroc_pixel))
+        #print("AP Pixel:  " +str(ap_pixel))
         print("==============================")
 
     print(run_name)
     print("AUC Image mean:  " + str(np.mean(obj_auroc_image_list)))
     print("AP Image mean:  " + str(np.mean(obj_ap_image_list)))
-    print("AUC Pixel mean:  " + str(np.mean(obj_auroc_pixel_list)))
-    print("AP Pixel mean:  " + str(np.mean(obj_ap_pixel_list)))
+    #print("AUC Pixel mean:  " + str(np.mean(obj_auroc_pixel_list)))
+    #print("AP Pixel mean:  " + str(np.mean(obj_ap_pixel_list)))
 
-    write_results_to_file(run_name, obj_auroc_image_list, obj_auroc_pixel_list, obj_ap_image_list, obj_ap_pixel_list)
+    write_results_to_file(run_name, obj_auroc_image_list, obj_auroc_pixel_list) #obj_ap_image_list, obj_ap_pixel_list)
 
 if __name__=="__main__":
     import argparse
