@@ -6,6 +6,7 @@ import numpy as np
 from sklearn.metrics import roc_auc_score, average_precision_score
 from model_unet import ReconstructiveSubNetwork, DiscriminativeSubNetwork
 import os
+import pandas as pd
 
 def write_results_to_file(run_name, image_auc, pixel_auc, image_ap, pixel_ap):
     if not os.path.exists('./outputs/'):
@@ -65,6 +66,7 @@ def test(obj_names, mvtec_path, checkpoint_path, base_model_name):
         mask_cnt = 0
 
         anomaly_score_gt = []
+        cls = []
         anomaly_score_prediction = []
 
         display_images = torch.zeros((16 ,3 ,256 ,256)).cuda()
@@ -81,6 +83,8 @@ def test(obj_names, mvtec_path, checkpoint_path, base_model_name):
 
             is_normal = sample_batched["has_anomaly"].detach().numpy()[0 ,0]
             anomaly_score_gt.append(is_normal)
+            img_class = sample_batched["cls"].detach().numpy()[0]
+            cls.append(img_class)
             true_mask = sample_batched["mask"]
             true_mask_cv = true_mask.detach().numpy()[0, :, :, :].transpose((1, 2, 0))
 
@@ -140,8 +144,8 @@ def test(obj_names, mvtec_path, checkpoint_path, base_model_name):
     print("AP Image mean:  " + str(np.mean(obj_ap_image_list)))
     #print("AUC Pixel mean:  " + str(np.mean(obj_auroc_pixel_list)))
     #print("AP Pixel mean:  " + str(np.mean(obj_ap_pixel_list)))
-
-    write_results_to_file(run_name, obj_auroc_image_list, obj_auroc_pixel_list) #obj_ap_image_list, obj_ap_pixel_list)
+    df = pd.DataFrame({'anomaly_score': anomaly_score_prediction, 'label': anomaly_score_gt, 'class': cls})
+    df.to_csv('DRAEM_INSPLAD_DRNPW.csv', index=False)
 
 if __name__=="__main__":
     import argparse
